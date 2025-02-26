@@ -2,6 +2,7 @@ from torch.utils.data import Dataset
 from Bio import SeqIO
 from torch import Tensor
 import numpy as np
+from __vocabs import dna_complimentar, dna_vocab, ohe_DNA
 
 
 class GenomicData_ZDNA(Dataset):

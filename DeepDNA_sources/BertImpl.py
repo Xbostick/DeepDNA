@@ -7,10 +7,11 @@ import numpy as np
 from Bio import SeqIO
 from io import StringIO, BytesIO
 from tqdm import tqdm
-import pickle
 import scipy
 from scipy import ndimage
 from .__vocabs import dna_vocab_revers
+import os
+import gdown
 
 
 TOKENIZER = None
@@ -37,11 +38,36 @@ def stitch_np_seq(np_seqs, pad = 16):
         res = np.concatenate([res,seq])
     return res
 
+
+def __download_needed_Bert_resources():
+    model = os.getenv("BERT_MODEL")
+    try:
+        os.mkdir("BERT_cache")
+    except:
+        pass
+    if model == 'HG chipseq':
+        model_id = '1VAsp8I904y_J0PUhAQqpSlCn1IqfG0FB'
+    elif model == 'HG kouzine':
+        model_id = '1dAeAt5Gu2cadwDhbc7OnenUgDLHlUvkx'
+    elif model == 'MM curax':
+        model_id = '1W6GEgHNoitlB-xXJbLJ_jDW4BF35W1Sd'
+    elif model == 'MM kouzine':
+        model_id = '1dXpQFmheClKXIEoqcZ7kgCwx6hzVCv3H'
+    gdown.download(id=model_id, output="./BERT_cache/")
+
+    gdown.download(id="10sF8Ywktd96HqAL0CwvlZZUUGj05CGk5", output="./BERT_cache/") # pytorch_model and config
+    gdown.download(id="16bT7HDv71aRwyh3gBUbKwign1mtyLD2d", output="./BERT_cache/") # special_tokens_map
+    gdown.download(id="1EE9goZ2JRSD8UTx501q71lGCk-CK3kqG", output="./BERT_cache/") # tokenizer_config
+    gdown.download(id="1gZZdtAoDnDiLQqjQfGyuwt268Pe5sXW0", output="./BERT_cache/") # vocab
+
 def init_bert():
     global TOKENIZER
     global MODEL
-    TOKENIZER = BertTokenizer.from_pretrained('./bert/')
-    MODEL = BertForTokenClassification.from_pretrained('./bert/')
+
+    if MODEL == None:
+        __download_needed_Bert_resources()
+    TOKENIZER = BertTokenizer.from_pretrained('./BERT_cache/')
+    MODEL = BertForTokenClassification.from_pretrained('./BERT_cache/')
     MODEL.cuda()
 
 def check_seq(seq_list):

@@ -18,6 +18,27 @@ import matplotlib.pyplot as plt
 from .BertImpl import Bert_Test
 _wandb = False
 from .__vocabs import dna_vocab_revers
+import gdown
+import urllib.request
+import subprocess
+# 
+
+def download_demo_resources():
+    try:
+        os.mkdir("./data",)
+    except OSError as error:
+        pass
+    print("Downloading hg19")
+    urllib.request.urlretrieve("http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.fa.gz", "./data/hg19.fa.gz")
+    process_hg19 = subprocess.Popen("gzip -d ./data/hg19.fa.gz", shell = True)
+    print("Downloading hg38")
+    urllib.request.urlretrieve("https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz", "./data/hg38.fa.gz")
+    process_hg38 = subprocess.Popen("gzip -d ./data/hg38.fa.gz", shell = True)
+    print("Downloading demo resources")
+    gdown.download_folder(id="https://drive.google.com/drive/folders/17_IMgmn_QZ_E52vxntmTfUU3eXHy-E2G", output="./data")
+    process_hg19.wait()
+    process_hg38.wait()
+
 
 def WandbLogging(LogData,StartTime, Delay):
     NowTime = time.perf_counter()

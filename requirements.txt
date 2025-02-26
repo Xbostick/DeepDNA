@@ -1,0 +1,12 @@
+numpy
+pandas
+torchmetrics
+tqdm
+scipy
+wandb
+gdown
+matplotlib
+transformers
+jupyter
+jupyterthemes
+biopython
