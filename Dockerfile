@@ -8,8 +8,6 @@ WORKDIR /usr/src/app
 COPY DeepDNA_Pipeline.ipynb ./
 CMD mkdir DeepDNA_sources
 COPY DeepDNA_sources ./DeepDNA_sources
-CMD mkdir BERT_cache
-
 # Update and install necessary packages
 RUN apt update && \
     apt upgrade -y && \
