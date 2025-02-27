@@ -8,7 +8,6 @@ The repository includes:
 - **DeepDNA_sources/** – Source code and scripts required for the pipeline.
 - **Dockerfile** – A ready-to-use containerized environment.
 - **requirements.txt** – List of dependencies for running the project.
-- **sample_data/** – Example DNA sequences used for training and evaluation.
 
 ## Research Background and Motivation
 The ability to generate synthetic DNA sequences with specific biological properties has significant implications in genetics, bioengineering, and pharmaceutical development. Many genetic studies rely on experimental data, which can be expensive and time-consuming to obtain. In this project, we investigate the use of deep learning-based approaches to generate sequences that closely resemble naturally occurring DNA structures while preserving important functional properties. 
