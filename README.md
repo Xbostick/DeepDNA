@@ -74,9 +74,12 @@ jupyter notebook
 - **GAN-based approach outperforms classical statistical models in generating diverse sequences**, reducing mode collapse issues common in simpler generative frameworks.
 
 ### Figures
-- **Model Architecture:** ![Model Architecture](docs/images/model_architecture.png)
-- **Sample Generated Sequences:** ![Generated Sequences](docs/images/generated_sequences.png)
-- **Training Performance:** ![Training Performance](docs/images/training_performance.png)
+- **Model Architecture:** ![image](https://github.com/user-attachments/assets/c26c5bbb-9bc9-4262-899c-b343a8fa1886)
+
+- **Sample Generated Sequences:** ![image](https://github.com/user-attachments/assets/10fc1047-1241-4930-880c-c67fa2cd7a15)
+
+- **Training Performance:** ![image](https://github.com/user-attachments/assets/5705bd47-c975-4b51-9ce4-1e86ccdc69ad)
+
 
 ## References
 This project is based on research in generative models and DNA sequence analysis. Key references include:
