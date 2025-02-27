@@ -21,10 +21,31 @@ minimum_sequence_length = 10 #@param {type:"integer"}
 
 
 def seq2kmer(seq, k):
+    """
+    Converts a DNA sequence into a list of k-mers.
+
+    Parameters:
+    - seq: The DNA sequence as a string.
+    - k: The length of the k-mers to generate.
+
+    Returns:
+    - A list of k-mers from the sequence.
+    """
     kmer = [seq[x:x+k] for x in range(len(seq)+1-k)]
     return kmer
 
 def split_seq(seq, length = 512, pad = 16):
+    """
+    Splits a DNA sequence into smaller chunks.
+
+    Parameters:
+    - seq: The DNA sequence as a string.
+    - length: The maximum length of each chunk (default 512).
+    - pad: Padding added to each chunk (default 16).
+
+    Returns:
+    - A list of subsequences of the specified length.
+    """
     res = []
     for st in range(0, len(seq), length - pad):
         end = min(st+512, len(seq))
@@ -32,6 +53,16 @@ def split_seq(seq, length = 512, pad = 16):
     return res
 
 def stitch_np_seq(np_seqs, pad = 16):
+    """
+    Stitches together multiple numpy arrays representing sequences.
+
+    Parameters:
+    - np_seqs: A list of numpy arrays to be stitched together.
+    - pad: The padding to remove between sequences (default 16).
+
+    Returns:
+    - A single numpy array containing all sequences stitched together.
+    """
     res = np.array([])
     for seq in np_seqs:
         res = res[:-pad]
@@ -40,6 +71,12 @@ def stitch_np_seq(np_seqs, pad = 16):
 
 
 def __download_needed_Bert_resources():
+    """
+    Downloads the necessary BERT resources, including pre-trained models and tokenizers.
+
+    The function selects the appropriate model based on the BERT_MODEL environment variable 
+    and downloads the model and tokenizer files to the './BERT_cache/' directory.
+    """
     model = os.getenv("BERT_MODEL")
     try:
         os.mkdir("BERT_cache")
@@ -61,6 +98,12 @@ def __download_needed_Bert_resources():
     gdown.download(id="1gZZdtAoDnDiLQqjQfGyuwt268Pe5sXW0", output="./BERT_cache/") # vocab
 
 def init_bert():
+    """
+    Initializes the BERT tokenizer and model.
+
+    Downloads the necessary resources if not already downloaded, and loads the tokenizer 
+    and model for token classification into global variables.
+    """
     global TOKENIZER
     global MODEL
 
@@ -71,6 +114,16 @@ def init_bert():
     MODEL.cuda()
 
 def check_seq(seq_list):
+    """
+    Checks a list of DNA sequences for the presence of significant motifs using BERT.
+
+    Parameters:
+    - seq_list: A list of DNA sequences to be checked.
+
+    Returns:
+    - A dictionary containing information about sequences that contain significant motifs 
+      (i.e., motifs with confidence above a threshold).
+    """
     num_hits = 0
     num_hits_no_filter = 0
     
@@ -104,6 +157,17 @@ def check_seq(seq_list):
     return out
 
 def Bert_Test(generator, data_sample, batch_size = 1):
+    """
+    Tests a generator model by generating synthetic DNA sequences and evaluating them using BERT.
+
+    Parameters:
+    - generator: The generator model used to produce synthetic sequences.
+    - data_sample: A sample of input data used to generate sequences.
+    - batch_size: The number of sequences to generate and test.
+
+    Returns:
+    - A dictionary containing the BERT output and success rate for the generated sequences.
+    """
     batch = []
     output = {"rate" : 0,
               "Bert_Output" : None}

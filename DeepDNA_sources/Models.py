@@ -12,10 +12,15 @@ import torch.nn.functional as F
 # Here i keep the most precision and universal model
 
 class DNA_2_Bio_Regression(nn.Module):
-    '''
-        The most precision and universal regression model 
-        to predict Biological parametr with DNA sequence
-    '''
+    """
+    A precise and universal regression model to predict biological parameters from DNA sequences.
+
+    The model consists of multiple 1D convolutional layers followed by fully connected layers 
+    to learn and predict biological parameters based on input DNA sequences.
+
+    Parameters:
+    - seq_size: The length of the input DNA sequence.
+    """
     def __init__(self,seq_size):
         super(DNA_2_Bio_Regression,self).__init__()
         self.conv1 = nn.Conv1d(1 ,200,5,1, padding = 'same')
@@ -46,6 +51,17 @@ class DNA_2_Bio_Regression(nn.Module):
 # with sintetic DNA sequences
 
 class BasicBlock_1D(nn.Module):
+    """
+    A basic building block of the 1D convolutional network used in the GAN generator and critic.
+
+    This block consists of two convolutional layers followed by batch normalization and a skip connection.
+
+    Parameters:
+    - in_planes: The number of input channels.
+    - planes: The number of output channels.
+    - stride: The stride of the convolutions (default is 1).
+    - is_last: Whether this is the last block in the network (default is False).
+    """
     expansion = 1
 
     def __init__(self, in_planes, planes, stride=1, is_last=False):
@@ -75,6 +91,18 @@ class BasicBlock_1D(nn.Module):
             return out
         
 class Bottleneck(nn.Module):
+    """
+    A bottleneck block used in the 1D convolutional GAN model.
+
+    This block consists of three convolutional layers with batch normalization, 
+    typically used to reduce the number of parameters in the network.
+
+    Parameters:
+    - in_planes: The number of input channels.
+    - planes: The number of output channels.
+    - stride: The stride of the convolutions (default is 1).
+    - is_last: Whether this is the last block in the network (default is False).
+    """
     expansion = 4
 
     def __init__(self, in_planes, planes, stride=1, is_last=False):
@@ -107,10 +135,17 @@ class Bottleneck(nn.Module):
             return out
         
 class DNA_Seq_Generator(nn.Module):
-    '''
-        DNA Sequence generator which has to work
-        in pair with `DNA_Seq_Critic()` 
-    '''
+    """
+    A generator model for generating synthetic DNA sequences.
+
+    This generator works in conjunction with the `DNA_Seq_Critic` model as part of a GAN architecture.
+
+    Parameters:
+    - gen_dim: The dimensionality of the latent space.
+    - max_seq_len: The maximum length of the generated sequences.
+    - annotated: Whether the output should be annotated (default is False).
+    - res_layers: The number of residual layers (default is 5).
+    """
     def __init__(self, gen_dim = 100, max_seq_len = 1200, annotated=False, res_layers=5):
         super(DNA_Seq_Generator, self).__init__()
         self.gen_dim = gen_dim
@@ -134,10 +169,17 @@ class DNA_Seq_Generator(nn.Module):
         return out
     
 class DNA_Seq_Critic(nn.Module):
-    '''
-        DNA Sequence critic which has to work
-        in pair with `DNA_Seq_Generator()` 
-    '''
+    """
+    A critic model for evaluating synthetic DNA sequences.
+
+    This critic works in conjunction with the `DNA_Seq_Generator` model as part of a GAN architecture.
+
+    Parameters:
+    - gen_dim: The dimensionality of the latent space.
+    - max_seq_len: The maximum length of the input sequences.
+    - num_channels: The number of channels in the input sequences (default is 100).
+    - res_layers: The number of residual layers (default is 5).
+    """
     def __init__(self, gen_dim = 100, max_seq_len = 1200, num_channels=100  , res_layers=5):
         super(DNA_Seq_Critic, self).__init__()
         self.block1 = BasicBlock_1D(gen_dim ,gen_dim)
